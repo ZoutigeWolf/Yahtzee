@@ -22,11 +22,13 @@ namespace Yahtzee
 
         public void Roll()
         {
+            Values.Clear();
+
             for (int i = 0; i < Amount; i++)
             {
                 Random rand = new Random();
 
-                Values[i] = rand.Next(1, 7);
+                Values.Add(rand.Next(1, 7));
             }
         }
 
