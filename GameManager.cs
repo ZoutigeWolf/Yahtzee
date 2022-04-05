@@ -17,29 +17,19 @@ namespace Yahtzee
 
         static void Main()
         {
-            Console.WriteLine("Enter 1 for the test, nothing for the game");
-            int input = Convert.ToInt32(Console.ReadLine());
-
-            if (input == 1)
-            {
-                int[] test = new int[] { 2, 2, 3, 3, 3 };
-
-                Console.WriteLine(test.ContainsNTimes(2) && test.ContainsNTimes(3));
-
-                return;
-            }
-
             Console.Clear();
 
             AddPlayers();
 
             _currentPlayerIndex = new Random().Next(players.Count);
-        }
+        }   
 
         static void AddPlayers()
         {
             if (_playersAdded)
+            {
                 return;
+            }
 
             Console.Clear();
             
