@@ -24,12 +24,14 @@ namespace Yahtzee
         {
             Values.Clear();
 
+            Random rand = new Random();
+            
             for (int i = 0; i < Amount; i++)
             {
-                Random rand = new Random();
-
                 Values.Add(rand.Next(1, 7));
             }
+
+            UnkeepValues();
         }
 
         public void KeepValues(int[] values)
@@ -40,82 +42,161 @@ namespace Yahtzee
                 {
                     if (Values[i] == value)
                     {
-                        ValuesToKeep[i] = value;
+                        ValuesToKeep.Add(value);
                         Values.RemoveAt(i);
                     }
                 }
             }
         }
+        
+        public void UnkeepValues()
+        {
+            foreach (int value in ValuesToKeep)
+            {
+                Values.Add(value);
+            }
+
+            ValuesToKeep.Clear();
+        }
+
+        public void PrintValues()
+        {
+            Console.WriteLine("Dice values:");
+            foreach (int val in Values)
+            {
+                Console.WriteLine(val);
+            }
+        }
 
         public int GetSum() => Values.Sum() + ValuesToKeep.Sum();
 
-        public string[] GetAvailableScores()
+        public int GetSum(int i)
         {
-            int[] total = Values.Concat(ValuesToKeep).ToArray();
+            int count = 0;
+
+            foreach (int die in Values)
+            {
+                if (die == i)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        public string[] GetAvailableScores(Points points)
+        {
+            int[] total = Values.ToArray();
 
             List<string> scores = new List<string>();
 
-            if (total.Contains(1))
+            if (total.Contains(1) && points.ones == 0)
             {
                 scores.Add("Ones");
             }
 
-            if (total.Contains(2))
+            if (total.Contains(2) && points.twos == 0)
             {
                 scores.Add("Twos");
             }
 
-            if (total.Contains(3))
+            if (total.Contains(3) && points.threes == 0)
             {
                 scores.Add("Threes");
             }
 
-            if (total.Contains(4))
+            if (total.Contains(4) && points.fours == 0)
             {
                 scores.Add("Fours");
             }
 
-            if (total.Contains(5))
+            if (total.Contains(5) && points.fives == 0)
             {
                 scores.Add("Fives");
             }
 
-            if (total.Contains(6))
+            if (total.Contains(6) && points.sixes == 0)
             {
                 scores.Add("Sixes");
             }
 
-            if (total.ContainsNTimes(3))
+            if (total.ContainsNTimes(3) && points.threeOfAKind == 0)
             {
                 scores.Add("Three of a kind");
             }
 
-            if (total.ContainsNTimes(4))
+            if (total.ContainsNTimes(4) && points.fourOfAKind == 0)
             {
-                scores.Add("Carre");
+                scores.Add("Four of a kind");
             }
 
-            if (total.ContainsNTimes(3) && total.ContainsNTimes(2))
+            if (total.ContainsNTimes(3) && total.ContainsNTimes(2) && points.fullHouse == 0)
             {
-                scores.Add("Full House");
+                scores.Add("Full house");
             }
 
-            if (total.IsIncreasing(4))
+            if (total.IsIncreasing(4) && points.smallStreet == 0)
             {
-                scores.Add("Small Street");
+                scores.Add("Small street");
             }
 
-            if (total.IsIncreasing(5))
+            if (total.IsIncreasing(5) && points.largeStreet == 0)
             {
-                scores.Add("Large Street");
+                scores.Add("Large street");
             }
 
-            if (total.IsAllSame())
+            if (total.IsAllSame() && points.topScore == 0)
             {
                 scores.Add("Yahtzee");
             }
 
             return scores.ToArray();
+        }
+
+        public int GetPoints(string category)
+        {
+            switch (category)
+            {
+                case "Ones":
+                    return GetSum(1);
+
+                case "Twos":
+                    return GetSum(2);
+
+                case "Threes":
+                    return GetSum(3);
+
+                case "Fours":
+                    return GetSum(4);
+
+                case "Fives":
+                    return GetSum(5);
+
+                case "Sixes":
+                    return GetSum(6);
+
+                case "Three of a kind":
+                    return GetSum();
+
+                case "Four of a kind":
+                    return GetSum();
+
+                case "Full house":
+                    return PointDefenitions.FullHouse;
+
+                case "Small street":
+                    return PointDefenitions.SmallStreet;
+
+                case "Large street":
+                    return PointDefenitions.LargeStreet;
+
+                case "Yahtzee":
+                    return PointDefenitions.TopScore;
+
+                default:
+                    return 0;
+            }
         }
     }
 }

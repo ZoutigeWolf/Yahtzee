@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yahtzee
 {
-    internal class Player
+    internal abstract class Player
     {
         public string Name { get; }
 
@@ -16,5 +16,7 @@ namespace Yahtzee
         {
             Name = name;
         }
+
+        public abstract void PlayTurn();
     }
 }

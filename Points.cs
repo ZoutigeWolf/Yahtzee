@@ -24,7 +24,7 @@ namespace Yahtzee
         public int sixes = 0;
 
         public int threeOfAKind = 0;
-        public int carre = 0;
+        public int fourOfAKind = 0;
         public int fullHouse = 0;
         public int smallStreet = 0;
         public int largeStreet = 0;

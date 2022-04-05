@@ -9,11 +9,11 @@ namespace Yahtzee
     internal static class GameManager
     {
         public static List<Player> players = new List<Player>();
-        private static bool _playersAdded = false;
 
         private static int _currentPlayerIndex = 0;
 
         public static Dice Dice { get; private set; } = new Dice(5);
+
 
         static void Main()
         {
@@ -22,11 +22,16 @@ namespace Yahtzee
             AddPlayers();
 
             _currentPlayerIndex = new Random().Next(players.Count);
+
+            while (true)
+            {
+                NextPlayer();
+            }
         }   
 
         static void AddPlayers()
         {
-            if (_playersAdded)
+            if (players.Count > 0)
             {
                 return;
             }
@@ -40,7 +45,7 @@ namespace Yahtzee
             {
                 Console.Clear();
                 
-                Console.WriteLine($"Enter the name for player {i + 1}");
+                Console.WriteLine($"Enter the name for player {i + 1} (enter 'cpu' for a bot player)");
                 string? playerName = Console.ReadLine();
 
                 if (playerName == null || string.IsNullOrEmpty(playerName))
@@ -48,11 +53,10 @@ namespace Yahtzee
                     playerName = $"Player {i + 1}";
                 }
 
-                Player player = new Player(playerName);
+                Player player = playerName.ToLower() == "cpu" ? new UserPlayer(playerName) : new UserPlayer(playerName);
+                
                 players.Add(player);
             }
-
-            _playersAdded = true;
 
             Console.Clear();
 
@@ -71,40 +75,15 @@ namespace Yahtzee
 
         static void NextPlayer()
         {
-            _currentPlayerIndex++;
+            players[_currentPlayerIndex].PlayTurn();
 
             if (_currentPlayerIndex >= players.Count)
             {
                 _currentPlayerIndex = 0;
             }
-        }
-
-        static void StartTurn()
-        {
-            Console.Clear();
-
-            Console.WriteLine($"{players[_currentPlayerIndex].Name}'s turn");
-            Console.WriteLine("Press any key to roll the dice");
-            Console.ReadKey();
-
-            Console.Clear();
             
-            Console.WriteLine("Dice:");
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine($"{i + 1}: {Dice.Values[i]}");
-            }
-
-            Console.WriteLine("Enter the values of the dice you want to keep separated by a space");
-            string? diceToKeep = Console.ReadLine();
-
-            if (diceToKeep != null && !string.IsNullOrEmpty(diceToKeep))
-            {
-                int[] values = Array.ConvertAll(diceToKeep.Split(" "), s => int.Parse(s));
-                Dice.KeepValues(values);
-            }
-
-            // Test
+            _currentPlayerIndex++;
         }
+
     }
 }
