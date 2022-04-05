@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "77042da1-deed-4fea-9da2-1f22d994f819": {
+      "ProjectGuid": "77042da1-deed-4fea-9da2-1f22d994f819",
+      "DisplayName": "Yahtzee",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
