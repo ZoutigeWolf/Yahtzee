@@ -12,9 +12,13 @@ namespace Yahtzee
         {
             
         }
+
+        private Dice _dice = new Dice(5);
+        private int _rollsRemaining = 3;
+        
         public override void PlayTurn()
         {
-            throw new NotImplementedException();
+            _dice = new Dice(5);
         }
     }
 }

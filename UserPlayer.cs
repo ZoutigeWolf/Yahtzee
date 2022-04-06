@@ -22,6 +22,8 @@ namespace Yahtzee
 
             _dice = new Dice(5);
 
+            _rollsRemaining = 3;
+
             RollDice();
         }
 
